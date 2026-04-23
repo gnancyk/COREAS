@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+pydantic-settings
+python-dotenv
+sqlalchemy
+pyodbc
+ldap3
+zeep
+httpx
+python-jose[cryptography]
+passlib[cryptography]
+python-multipart
