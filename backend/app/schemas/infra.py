@@ -3,6 +3,8 @@ from typing import List, Dict, Optional
 
 class InfraBaseRequest(BaseModel):
     servers: List[str] = Field(..., example=["srv-batch-01", "srv-batch-02"])
+    username: Optional[str] = None
+    password: Optional[str] = None
 
 class PortVerificationRequest(InfraBaseRequest):
     port: int = 5986
@@ -59,12 +61,41 @@ class ThresholdResponse(BaseModel):
     results: List[MetricResult]
     is_global_compliant: bool
 
+class ProcessInfo(BaseModel):
+    name: str
+    cpu_usage: Optional[float] = None
+    ram_usage_mb: float
+
+class SSLInfo(BaseModel):
+    subject: str
+    expiry_date: str
+    days_remaining: int
+    is_valid: bool
+
+class AppPoolInfo(BaseModel):
+    name: str
+    state: str
+
 class OSInfoResult(BaseModel):
     server: str
     os_name: str
     os_version: str
     last_reboot: str
     cpu_count: int
+    cpu_usage_percent: Optional[float] = None
+    ram_total_gb: Optional[float] = None
+    ram_used_gb: Optional[float] = None
+    ram_free_gb: Optional[float] = None
+    disk_total_gb: Optional[float] = None
+    disk_used_gb: Optional[float] = None
+    disk_free_gb: Optional[float] = None
+    model: Optional[str] = None
+    manufacturer: Optional[str] = None
+    top_processes: List[ProcessInfo] = []
+    dns_status: Dict[str, bool] = {}
+    last_update_date: Optional[str] = None
+    ssl_certificates: List[SSLInfo] = []
+    app_pools: List[AppPoolInfo] = []
     is_reachable: bool
     error_message: Optional[str] = None
 

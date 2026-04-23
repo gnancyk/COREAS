@@ -19,8 +19,8 @@ async def verifier_ports(payload: PortVerificationRequest, current_user: str = D
     results = InfraService.verifier_port_5986(payload.servers)
     return {"results": results}
 
-@router.post("/disponibilite/serveur") # J'ajouterai le response_model après avoir mis à jour les schémas
-async def verifier_disponibilite(payload: PortVerificationRequest, current_user: str = Depends(get_current_user)):
+@router.post("/disponibilite/serveur", response_model=AvailabilityResponse)
+async def verifier_disponibilite(payload: AvailabilityRequest, current_user: str = Depends(get_current_user)):
     """
     Ping de disponibilité pour une liste de serveurs.
     """
@@ -28,11 +28,11 @@ async def verifier_disponibilite(payload: PortVerificationRequest, current_user:
     return {"results": results}
 
 @router.post("/caracteristiques/serveur", response_model=OSInfoResponse)
-async def obtenir_caracteristiques(payload: PortVerificationRequest, current_user: str = Depends(get_current_user)):
+async def obtenir_caracteristiques(payload: OSInfoRequest, current_user: str = Depends(get_current_user)):
     """
-    Récupération des informations OS (Version, Uptime, CPU).
+    Récupération des informations OS (Version, Uptime, CPU). supporte les credentials.
     """
-    results = InfraService.obtenir_caracteristiques_os(payload.servers)
+    results = InfraService.obtenir_caracteristiques_os(payload.servers, payload.username, payload.password)
     return {"results": results}
 
 @router.post("/fonctionnalites/verification", response_model=FeatureVerificationResponse)
@@ -40,5 +40,5 @@ async def verifier_fonctionnalites(payload: FeatureVerificationRequest, current_
     """
     Prend une liste de fonctionnalités et de serveurs, retourne état installé/non installé.
     """
-    results = InfraService.verifier_fonctionnalites(payload.servers, payload.features)
+    results = InfraService.verifier_fonctionnalites(payload.servers, payload.features, payload.username, payload.password)
     return {"results": results}

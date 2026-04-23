@@ -36,14 +36,29 @@ class PowerShellService:
             }
 
     @staticmethod
-    def run_remote_command(server: str, command: str) -> Dict:
+    def run_remote_command(server: str, command: str, username: Optional[str] = None, password: Optional[str] = None) -> Dict:
         """
         Exécute une commande sur un serveur distant via Invoke-Command.
-        Nécessite que WinRM soit configuré sur le serveur cible.
+        Détecte SSL et gère les identifiants si fournis.
         """
-        # On encapsule la commande pour Invoke-Command
-        remote_cmd = f"Invoke-Command -ComputerName {server} -ScriptBlock {{ {command} }}"
-        return PowerShellService.run_command(remote_cmd)
+        use_ssl = PowerShellService.check_port(server, 5986)
+        
+        # Préparation des credentials si fournis
+        cred_setup = ""
+        cred_param = ""
+        if username and password:
+            # Échapper les guillemets simples dans le mot de passe
+            safe_password = password.replace("'", "''")
+            cred_setup = f"$pw = ConvertTo-SecureString '{safe_password}' -AsPlainText -Force; $cred = New-Object System.Management.Automation.PSCredential ('{username}', $pw); "
+            cred_param = "-Credential $cred"
+
+        options = ""
+        if use_ssl:
+            options = "-UseSSL -SessionOption (New-PSSessionOption -SkipCACheck -SkipCNCheck)"
+        
+        full_cmd = f"{cred_setup}Invoke-Command -ComputerName {server} {options} {cred_param} -ScriptBlock {{ {command} }}"
+            
+        return PowerShellService.run_command(full_cmd)
 
     @staticmethod
     def check_port(server: str, port: int, timeout: int = 3) -> bool:
