@@ -6,7 +6,8 @@ from app.schemas.batch import (
     DateTimeResponse, BatchBaseRequest,
     CriteriaCheckRequest, CriteriaResponse,
     DynamicAuditRequest, DynamicAuditResponse,
-    SQLConnectRequest, SQLConnectResponse
+    SQLConnectRequest, SQLConnectResponse,
+    ComplianceCheckRequest, ComplianceCheckResponse
 )
 from app.services.batch.service import BatchService
 from app.services.infra.service import InfraService
@@ -67,4 +68,19 @@ async def tester_sql(payload: SQLConnectRequest, current_user: str = Depends(get
     Teste si le serveur Batch peut atteindre l'instance SQL (Test de port réseau).
     """
     results = BatchService.tester_connexion_sql_remote(payload.servers, payload.sql_instance, payload.port, payload.username, payload.password)
+    return {"results": results}
+
+@router.post("/conformite/centralisation", response_model=ComplianceCheckResponse)
+async def verifier_conformite_centralisation(payload: ComplianceCheckRequest, current_user: str = Depends(get_current_user)):
+    """
+    Audit de conformité : vérifie si le paramètre CentralisationParamEndPoint dans les .config
+    est identique à l'URL CentralParam de référence.
+    """
+    results = BatchService.verifier_conformite_centralisation(
+        payload.servers, 
+        payload.central_param_url, 
+        payload.saphir_modules, 
+        payload.username, 
+        payload.password
+    )
     return {"results": results}

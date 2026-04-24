@@ -66,7 +66,7 @@ async def obtenir_tous_parametres(
 @router.post("/conforme", response_model=ConformityResponse)
 async def verifier_conformite(payload: UrlControlRequest, current_user: str = Depends(get_current_user)):
     """
-    Vérification complète : Validité technique + Présence de paramètres (Count > 0).
+    Vérification complète : Validité technique + Présence et vérification de CrmConnectionString.
     """
     syntax_valid = CentralParamService.verifier_syntaxe_url(payload.url)
     if not syntax_valid:
@@ -82,22 +82,29 @@ async def verifier_conformite(payload: UrlControlRequest, current_user: str = De
     
     result = CentralParamService.verifier_service_soap(payload.url)
     
-    # Récupération effective du count via les paramètres
     param_count = 0
+    is_conforme = False
+    message = ""
+
     if result["is_wcf"]:
         try:
-            params = CentralParamService.extraire_parametres(payload.url)
+            params = CentralParamService.extraire_parametres(payload.url, filter_list=["CrmConnectionString"])
             param_count = len(params)
-        except:
+            
+            if param_count > 0:
+                crm_conn = params[0].get("value", "")
+                if crm_conn and str(crm_conn).strip():
+                    is_conforme = True
+                    message = "CentralParam conforme (CrmConnectionString présent et renseigné)"
+                else:
+                    message = "CentralParam non conforme (CrmConnectionString est vide ou page blanche)"
+            else:
+                message = "CentralParam non conforme (paramètre CrmConnectionString introuvable)"
+        except Exception as e:
             param_count = 0
-
-    is_conforme = result["is_wcf"] and param_count > 0
-    
-    message = "CentralParam conforme" if is_conforme else "CentralParam non conforme"
-    if result["is_wcf"] and param_count == 0:
-        message += " (Service valide mais configuration vide/blanche)"
-    elif not result["is_wcf"]:
-        message += " (Service inaccessible ou non WCF)"
+            message = "CentralParam non conforme (Erreur à l'extraction)"
+    else:
+        message = "Service inaccessible ou non WCF"
 
     return {
         "url": payload.url,

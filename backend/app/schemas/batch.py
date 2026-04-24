@@ -73,3 +73,19 @@ class SQLConnectResult(BaseModel):
 
 class SQLConnectResponse(BaseModel):
     results: List[SQLConnectResult]
+
+class ComplianceCheckRequest(BatchBaseRequest):
+    central_param_url: str = Field(..., example="http://10.10.20.50/CentralParam/CentralParam.svc")
+    saphir_modules: Optional[List[str]] = Field(default=None)
+    search_paths: Optional[List[str]] = Field(default=None) # Chemins UNC fournis manuellement
+    servers: Optional[List[str]] = Field(default=None)
+
+class ComplianceCheckResult(BaseModel):
+    server: str
+    config_file: str
+    local_endpoint: Optional[str]
+    reference_endpoint: str
+    is_compliant: bool
+
+class ComplianceCheckResponse(BaseModel):
+    results: List[ComplianceCheckResult]
