@@ -1,0 +1,214 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+:global(body), :global(html) {
+  margin: 0;
+  padding: 0;
+  background-color: #84868b;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: #f0f6fc;
+}
+
+:global(*) {
+  box-sizing: border-box;
+}
+
+.loginContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100vw;
+  padding: 20px;
+  background-image: radial-gradient(circle at 50% -20%, #3b5f4b, #0d1117 80%);
+}
+
+.loginCard {
+  width: 100%;
+  max-width: 380px;
+  padding: 40px;
+  background: #1b5a3b;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  box-shadow: 0 24px 48px rgb(0, 0, 0), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.logoWrapper {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #2563eb, #1e3a8a);
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 24px;
+  box-shadow: 0 8px 16px rgba(29, 78, 216, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.primaryIcon {
+  color: #ffffff;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: #c9d1d9;
+  letter-spacing: -0.015em;
+}
+
+.subtitle {
+  color: #8b949e;
+  font-size: 0.875rem;
+  margin: 0;
+  font-weight: 400;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inputLabel {
+  font-size: 0.875rem;
+  color: #c9d1d9;
+  font-weight: 500;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* .fieldIcon {
+  position: absolute;
+  left: 14px;
+  color: #8b949e;
+  transition: color 0.2s ease;
+} */
+
+.inputField {
+  width: 100%;
+  background: #cbcbd3;
+  border: 1px solid #30363d;
+  padding: 10px 16px 10px 10px;
+  border-radius: 6px;
+  color: #000000;
+  font-size: 0.9375rem;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.inputField::placeholder {
+  color: #3a3939;
+}
+
+.inputField:focus {
+  outline: none;
+  border-color: #58a6ff;
+  box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
+}
+
+.inputField:focus + .fieldIcon {
+  color: #58a6ff;
+}
+
+.statusMsg {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  animation: shakeError 0.3s ease-in-out;
+}
+
+@keyframes shakeError {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.errorMsg {
+  background: rgba(20, 2, 1, 0.073);
+  color: #070707;
+  border: 1px solid rgba(15, 1, 1, 0.4);
+}
+
+.successMsg {
+  background: rgba(46, 160, 67, 0.1);
+  color: #3fb950;
+  border: 1px solid rgba(46, 160, 67, 0.4);
+  animation: slideInSuccess 0.3s ease-out;
+}
+
+@keyframes slideInSuccess {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.btnSubmit {
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid rgba(240, 246, 252, 0.1);
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  font-family: inherit;
+  margin-top: 4px;
+}
+
+.btnSubmit:hover:not(:disabled) {
+  background: #2ea043;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btnSubmit:active:not(:disabled) {
+  background: #238636;
+}
+
+.btnSubmit:disabled {
+  background: #122c18;
+  color: rgba(255, 255, 255, 0.4);
+  border-color: transparent;
+  cursor: not-allowed;
+}
+
+.footer {
+  margin-top: 32px;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #8b949e;
+}

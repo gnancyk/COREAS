@@ -1,0 +1,205 @@
+Status: 200
+Headers: {'Cache-Control': 'private', 'Content-Type': 'text/html; charset=utf-8', 'Server': 'Microsoft-IIS/10.0', 'X-AspNet-Version': '4.0.30319', 'X-Powered-By': 'ASP.NET', 'Date': 'Mon, 20 Apr 2026 17:53:53 GMT', 'Content-Length': '25340'}
+
+--- Content ---
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>
+
+</title></head>
+<body>
+    <form method="post" action="./?wsdl" id="form1">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="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" />
+
+<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="2DEB8ADD" />
+<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="3nxUk6URZJ5bOXz1npRwvkd3r9spRWO9bkFKRaXQNR62FwgY2RWULbXyaw+zaewy7G7OAPr5LvldTPZBRvoAiA6HQ2lLFBR27k0D7P8IZchqumjaNh2fjvYtkqRt0wGgeR3qh3I8k4ps89hD/0VStPJts17AMZarDmiV61BfqR9WxpQXr143+9vCwipL7XI+ReZrh3tuzowOlT/1p6Hl8RBRnQJBMQH5yPJs/HZ2yJrKzBF5PWejBcDKco9ZScm1QvBU/Q7W/LTuQu1ijJRawwxR1oOuyb1xmW5wQ+xciV0hyKvKCE4Q+8XSHBhEX9s+wTGWykQ92S1BiQ3TQ8DwJuPJ7Zg7Qz5txi9ihfcyg1HnshruDJwaa7lmsgExS+wlMH0p8dU28Imeym9i9G3lAHxcaP4O0epgdhDriHrEn7WkSnWhHou1nIHO4dxxXxN4aXQK2WjVYUG/xD0/vEyCv7nqhcrjRexnASrJoN2j3DGSpt1c3mDZAzHIToorwMy6Qoxtd1dRhqR/op0a0kLn4Cjp643yJGKKTx55jChWe1QgLphriVw3hW80Cw48OFr9YPSQlkFmBt9mzH9kGW5OFTNnHrOLlzqIbK26cGwOJKcg2H8DPeDyZpkZ0QAs654zvGVJbhxczKz7jrHJKXTUbyHbEhs8uAkwDLn1cPNJ1mK6Uy6IoTmofZ7HOm3jh6czSUBpGbpcQ0gGW7aSwViX5oOoa8Q8srQ1XC7u22X1KTaMkz1KcKkCMeoD0fbk4GiHH9Se4crFfXAhqn2ZM4CWxF0GPKIVUWFkYCQvH4AqIpr6fG1mB/L4xkOPxKNKgoiLJ51WGrNlvg6CexQky3STiolDHNTkc7MoKUX5GEchk88napzL3FFJFLfXh1Ww/RdSikZfligsB5I4y5bwYdZJyszNUy3AHuiQEjOBHbhwZp0MxOUUxTXDvMR2FteHhKg4QvimW0LuqKwXzMioROKqA9it2jZFyP2JGdoQmIYFZeM=" />
+    <div>
+    
+    <div>
+	<table cellspacing="0" cellpadding="3" rules="rows" bordercolor="#E7E7FF" id="GridView1" bgcolor="White" height="284" width="100%">
+		<tr bgcolor="#4A3C8C">
+			<th scope="col"><font face="Calibri" color="#F7F7F7"><b>Nom</b></font></th><th scope="col"><font face="Calibri" color="#F7F7F7"><b>Valeur</b></font></th>
+		</tr><tr bgcolor="#E7E7FF">
+			<td width="300"><font face="Calibri" color="#4A3C8C">AdresseIP_ServeurSMTP</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl02$TextBox1" type="text" value="mail.univers.ci" readonly="readonly" id="GridView1_TextBox1_0" />
+                 </font></td>
+		</tr><tr bgcolor="#F7F7F7">
+			<td width="300"><font face="Calibri" color="#4A3C8C">ApiNmpfCrmDbConnectionString</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl03$TextBox1" type="text" value="Data Source=GSECRMS1DEV\CIE;Initial Catalog=SAPHIRV3_MSCRM;MultiSubnetFailover=True;Integrated Security=False;Persist Security Info=True;User ID=sa;Password=Operating0;Connection Timeout=300;Max Pool Size=10000;Min Pool Size=5000;Pooling=true" readonly="readonly" id="GridView1_TextBox1_1" />
+                 </font></td>
+		</tr><tr bgcolor="#E7E7FF">
+			<td width="300"><font face="Calibri" color="#4A3C8C">ApiNmpfDbExtConnectionString</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl04$TextBox1" type="text" value="Data Source=GSECRMS1DEV\CIE;Initial Catalog=SAPHIRV3_EXT;MultiSubnetFailover=True;Integrated Security=False;Persist Security Info=True;User ID=sa;Password=Operating0;Connection Timeout=300;Max Pool Size=10000;Min Pool Size=5000;Pooling=true" readonly="readonly" id="GridView1_TextBox1_2" />
+                 </font></td>
+		</tr><tr bgcolor="#F7F7F7">
+			<td width="300"><font face="Calibri" color="#4A3C8C">BaylanConnexionString</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl05$TextBox1" type="text" value=" " readonly="readonly" id="GridView1_TextBox1_3" />
+                 </font></td>
+		</tr><tr bgcolor="#E7E7FF">
+			<td width="300"><font face="Calibri" color="#4A3C8C">BaylanPassword</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl06$TextBox1" type="text" value="da178a2da62b87633cf22613d5b159c9" readonly="readonly" id="GridView1_TextBox1_4" />
+                 </font></td>
+		</tr><tr bgcolor="#F7F7F7">
+			<td width="300"><font face="Calibri" color="#4A3C8C">BaylanServerURL</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl07$TextBox1" type="text" value="http://10.109.19.193:8400/general/interface/tpservice.php?ACTION=3" readonly="readonly" id="GridView1_TextBox1_5" />
+                 </font></td>
+		</tr><tr bgcolor="#E7E7FF">
+			<td width="300"><font face="Calibri" color="#4A3C8C">BaylanUserName</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl08$TextBox1" type="text" value="DDI" readonly="readonly" id="GridView1_TextBox1_6" />
+                 </font></td>
+		</tr><tr bgcolor="#F7F7F7">
+			<td width="300"><font face="Calibri" color="#4A3C8C">CaisseDbConnectionString</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl09$TextBox1" type="text" value="Data Source=GSECRMS1DEV\CIE;Initial Catalog=DEV_CAISSE;MultiSubnetFailover=True;Integrated Security=False;Persist Security Info=True;User ID=sa;Password=Operating0;Connection Timeout=300;Max Pool Size=30000" readonly="readonly" id="GridView1_TextBox1_7" />
+                 </font></td>
+		</tr><tr bgcolor="#E7E7FF">
+			<td width="300"><font face="Calibri" color="#4A3C8C">CrmConnectionString</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl10$TextBox1" type="text" value="Server=http://GSECRMC1DEV/DEVBT;Domain=UNIVERS;Username=Adminsaphirv3PP;Password=$pecial@ccountpp04" readonly="readonly" id="GridView1_TextBox1_8" />
+                 </font></td>
+		</tr><tr bgcolor="#F7F7F7">
+			<td width="300"><font face="Calibri" color="#4A3C8C">CrmDbComptaConnectionString</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl11$TextBox1" type="text" value="Data Source=GSECRMS1DEV\CIE;Initial Catalog=DB_COMPTA;MultiSubnetFailover=True;Integrated Security=False;Persist Security Info=True;User ID=sa;Password=Operating0;Connection Timeout=300;Max Pool Size=30000" readonly="readonly" id="GridView1_TextBox1_9" />
+                 </font></td>
+		</tr><tr bgcolor="#E7E7FF">
+			<td width="300"><font face="Calibri" color="#4A3C8C">CrmDbConnectionString</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl12$TextBox1" type="text" value="Data Source=GSECRMS1DEV\CIE;Initial Catalog=SAPHIRV3_MSCRM;MultiSubnetFailover=True;Integrated Security=False;Persist Security Info=True;User ID=sa;Password=Operating0;Connection Timeout=300;Max Pool Size=30000" readonly="readonly" id="GridView1_TextBox1_10" />
+                 </font></td>
+		</tr><tr bgcolor="#F7F7F7">
+			<td width="300"><font face="Calibri" color="#4A3C8C">CrmDbExtConnectionString</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl13$TextBox1" type="text" value="Data Source=GSECRMS1DEV\CIE;Initial Catalog=SAPHIRV3_EXT;MultiSubnetFailover=True;Integrated Security=False;Persist Security Info=True;User ID=sa;Password=Operating0;Connection Timeout=300;Max Pool Size=30000" readonly="readonly" id="GridView1_TextBox1_11" />
+                 </font></td>
+		</tr><tr bgcolor="#E7E7FF">
+			<td width="300"><font face="Calibri" color="#4A3C8C">DataBaseNamePrefix</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl14$TextBox1" type="text" value="CIE_Lite_MSCRM.dbo." readonly="readonly" id="GridView1_TextBox1_12" />
+                 </font></td>
+		</tr><tr bgcolor="#F7F7F7">
+			<td width="300"><font face="Calibri" color="#4A3C8C">GabaritEmailFacture</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl15$TextBox1" type="text" value="facture_reelle_CIERR_BT_V2_MAILING" readonly="readonly" id="GridView1_TextBox1_13" />
+                 </font></td>
+		</tr><tr bgcolor="#E7E7FF">
+			<td width="300"><font face="Calibri" color="#4A3C8C">LBTPWebApiPassword</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl16$TextBox1" type="text" value="ac56238fb51da663bdf2b9beb39e606d" readonly="readonly" id="GridView1_TextBox1_14" />
+                 </font></td>
+		</tr><tr bgcolor="#F7F7F7">
+			<td width="300"><font face="Calibri" color="#4A3C8C">LBTPWebApiUrl</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl17$TextBox1" type="text" value="https://www.lbtp.org/plateforme/test/api/attestation" readonly="readonly" id="GridView1_TextBox1_15" />
+                 </font></td>
+		</tr><tr bgcolor="#E7E7FF">
+			<td width="300"><font face="Calibri" color="#4A3C8C">LBTPWebApiUser</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl18$TextBox1" type="text" value="apiuser4" readonly="readonly" id="GridView1_TextBox1_16" />
+                 </font></td>
+		</tr><tr bgcolor="#F7F7F7">
+			<td width="300"><font face="Calibri" color="#4A3C8C">LogDirectory</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl19$TextBox1" type="text" value="\\GSECRMB1DEV\Log\CIE" readonly="readonly" id="GridView1_TextBox1_17" />
+                 </font></td>
+		</tr><tr bgcolor="#E7E7FF">
+			<td width="300"><font face="Calibri" color="#4A3C8C">MailingSaphirUser</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl20$TextBox1" type="text" value="facture.cie@cie.ci" readonly="readonly" id="GridView1_TextBox1_18" />
+                 </font></td>
+		</tr><tr bgcolor="#F7F7F7">
+			<td width="300"><font face="Calibri" color="#4A3C8C">MailingSaphirUserPassword</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl21$TextBox1" type="text" value="Operating0" readonly="readonly" id="GridView1_TextBox1_19" />
+                 </font></td>
+		</tr><tr bgcolor="#E7E7FF">
+			<td width="300"><font face="Calibri" color="#4A3C8C">MinutesIntervalExecutionService</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl22$TextBox1" type="text" value="1" readonly="readonly" id="GridView1_TextBox1_20" />
+                 </font></td>
+		</tr><tr bgcolor="#F7F7F7">
+			<td width="300"><font face="Calibri" color="#4A3C8C">OrganizationName</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl23$TextBox1" type="text" value="CIE16" readonly="readonly" id="GridView1_TextBox1_21" />
+                 </font></td>
+		</tr><tr bgcolor="#E7E7FF">
+			<td width="300"><font face="Calibri" color="#4A3C8C">paramDomaine</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl24$TextBox1" type="text" value="UNIVERS" readonly="readonly" id="GridView1_TextBox1_22" />
+                 </font></td>
+		</tr><tr bgcolor="#F7F7F7">
+			<td width="300"><font face="Calibri" color="#4A3C8C">paramFiltreAdresseMailClient</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl25$TextBox1" type="text" value="cie.ci;sodeci.ci;gs2e.ci;gs2e.ci;sde.sn;" readonly="readonly" id="GridView1_TextBox1_23" />
+                 </font></td>
+		</tr><tr bgcolor="#E7E7FF">
+			<td width="300"><font face="Calibri" color="#4A3C8C">paramNombreService</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl26$TextBox1" type="text" value="16" readonly="readonly" id="GridView1_TextBox1_24" />
+                 </font></td>
+		</tr><tr bgcolor="#F7F7F7">
+			<td width="300"><font face="Calibri" color="#4A3C8C">paramPEPTRejectionsFileName</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl27$TextBox1" type="text" value="WinServ_PEPTRejection" readonly="readonly" id="GridView1_TextBox1_25" />
+                 </font></td>
+		</tr><tr bgcolor="#E7E7FF">
+			<td width="300"><font face="Calibri" color="#4A3C8C">paramPEPTRejectionsFolder</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl28$TextBox1" type="text" value="\\GSECRMB1DEV\Log\CIE\WinService.ImpactsPEPT_SaphirV3\PEPTRejectionFolder\" readonly="readonly" id="GridView1_TextBox1_26" />
+                 </font></td>
+		</tr><tr bgcolor="#F7F7F7">
+			<td width="300"><font face="Calibri" color="#4A3C8C">paramRapportFactureUnitare</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl29$TextBox1" type="text" value=" facture_reelle_CIERR_HT;facture_reelle_CIERR_BT;facture_reelle_SODECIRR;facture_reelle_SDERR" readonly="readonly" id="GridView1_TextBox1_27" />
+                 </font></td>
+		</tr><tr bgcolor="#E7E7FF">
+			<td width="300"><font face="Calibri" color="#4A3C8C">paramURLOrganisationCRM</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl30$TextBox1" type="text" value="http://gsecrmc1dev/CIE16/XRMServices/2011/Organization.svc" readonly="readonly" id="GridView1_TextBox1_28" />
+                 </font></td>
+		</tr><tr bgcolor="#F7F7F7">
+			<td width="300"><font face="Calibri" color="#4A3C8C">paramUserCRM</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl31$TextBox1" type="text" value="Adminsaphirv3pp" readonly="readonly" id="GridView1_TextBox1_29" />
+                 </font></td>
+		</tr><tr bgcolor="#E7E7FF">
+			<td width="300"><font face="Calibri" color="#4A3C8C">paramUserCRMPassword</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl32$TextBox1" type="text" value="$pecial@ccountpp04" readonly="readonly" id="GridView1_TextBox1_30" />
+                 </font></td>
+		</tr><tr bgcolor="#F7F7F7">
+			<td width="300"><font face="Calibri" color="#4A3C8C">PEPTIntervalTime</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl33$TextBox1" type="text" value="3600000" readonly="readonly" id="GridView1_TextBox1_31" />
+                 </font></td>
+		</tr><tr bgcolor="#E7E7FF">
+			<td width="300"><font face="Calibri" color="#4A3C8C">RapportFactureGroupee</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl34$TextBox1" type="text" value="facture_reelle_GROUPE_releve" readonly="readonly" id="GridView1_TextBox1_32" />
+                 </font></td>
+		</tr><tr bgcolor="#F7F7F7">
+			<td width="300"><font face="Calibri" color="#4A3C8C">RepportEditionBordereau</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl35$TextBox1" type="text" value="Edition bordereau" readonly="readonly" id="GridView1_TextBox1_33" />
+                 </font></td>
+		</tr><tr bgcolor="#E7E7FF">
+			<td width="300"><font face="Calibri" color="#4A3C8C">RPNTIntervalTime</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl36$TextBox1" type="text" value="3600000" readonly="readonly" id="GridView1_TextBox1_34" />
+                 </font></td>
+		</tr><tr bgcolor="#F7F7F7">
+			<td width="300"><font face="Calibri" color="#4A3C8C">SaphirComDbConnexionString</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl37$TextBox1" type="text" value="Persist Security Info=False;Initial Catalog=SAPHIRCOM;Data Source=GSECRMS1DEV\CIE;user id=SAPHIRV3;password=Lq$03@Dm!N2021;" readonly="readonly" id="GridView1_TextBox1_35" />
+                 </font></td>
+		</tr><tr bgcolor="#E7E7FF">
+			<td width="300"><font face="Calibri" color="#4A3C8C">SaphirDbGenericUSP</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl38$TextBox1" type="text" value="usp_GS2E_GENERICEXECUTESQLREQUEST" readonly="readonly" id="GridView1_TextBox1_36" />
+                 </font></td>
+		</tr><tr bgcolor="#F7F7F7">
+			<td width="300"><font face="Calibri" color="#4A3C8C">SaphirPEPTDbCnxString</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl39$TextBox1" type="text" value="Data Source=GSECRMS1DEV\CIE;Initial Catalog=SAPHIRV3_EXT;MultiSubnetFailover=True;Integrated Security=False;Persist Security Info=True;User ID=sa;Password=Operating0;Connection Timeout=300;Max Pool Size=30000" readonly="readonly" id="GridView1_TextBox1_37" />
+                 </font></td>
+		</tr><tr bgcolor="#E7E7FF">
+			<td width="300"><font face="Calibri" color="#4A3C8C">URLCaisseService</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl40$TextBox1" type="text" value="http://GSECRMW1DEV:88/CIE_SERVICECAISSE/ServiceCaisse.svc" readonly="readonly" id="GridView1_TextBox1_38" />
+                 </font></td>
+		</tr><tr bgcolor="#F7F7F7">
+			<td width="300"><font face="Calibri" color="#4A3C8C">URLEditionautoFacture</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl41$TextBox1" type="text" value="http://gsecrmr1dev/ReportServer/Pages/ReportViewer.aspx?/SAPHIRV3_MSCRM/ETAT_FACTURATION/facture_reelle_GROUPE_releve&amp;rs:Command=Render&amp;rs:Format=PDF&amp;Id_campagne={0}&amp;Quota={1}" readonly="readonly" id="GridView1_TextBox1_39" />
+                 </font></td>
+		</tr><tr bgcolor="#E7E7FF">
+			<td width="300"><font face="Calibri" color="#4A3C8C">UrlReportServerWebService</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl42$TextBox1" type="text" value="http://gsecrmr1dev/ReportServer/ReportExecution2005.asmx" readonly="readonly" id="GridView1_TextBox1_40" />
+                 </font></td>
+		</tr><tr bgcolor="#F7F7F7">
+			<td width="300"><font face="Calibri" color="#4A3C8C">WorkingDirectory</font></td><td><font face="Calibri" color="#4A3C8C">
+                    <input name="GridView1$ctl43$TextBox1" type="text" value="\\GSECRMB1DEV\Log\CIE" readonly="readonly" id="GridView1_TextBox1_41" />
+                 </font></td>
+		</tr>
+	</table>
+</div>
+
+
+    </div>
+       
+
+        
+    
+    </form>
+</body>
+</html>

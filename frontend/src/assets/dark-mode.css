@@ -1,0 +1,155 @@
+/* GLOBAL DARK THEME overrides */
+body[data-theme="dark"],
+body[data-theme="dark"] #app {
+  background-color: #0a0a0a !important;
+  color: #ededed !important;
+}
+
+body[data-theme="dark"] div[class*="contentArea"],
+body[data-theme="dark"] header[class*="topbar"] {
+  background-color: #0a0a0a !important;
+  color: #ededed !important;
+  border-bottom-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Sidebar fixes in dark mode (usually already dark, ensure text contrast) */
+body[data-theme="dark"] aside[class*="sidebar"] {
+  background: #0a0a0a !important;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Modals, Cards, Items */
+body[data-theme="dark"] div[class*="statCard"],
+body[data-theme="dark"] div[class*="envItem"],
+body[data-theme="dark"] div[class*="modal"],
+body[data-theme="dark"] div[class*="dropdownMenu"],
+body[data-theme="dark"] div[class*="alertCard"],
+body[data-theme="dark"] div[class*="historySection"] {
+  background-color: #141414 !important;
+  color: #ededed !important;
+  border: 1px solid #262626 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Headers/Titles */
+body[data-theme="dark"] h1[class*="pageTitle"],
+body[data-theme="dark"] h2[class*="sectionTitle"],
+body[data-theme="dark"] h3[class*="groupTitle"],
+body[data-theme="dark"] h3[class*="modalTitle"],
+body[data-theme="dark"] h4[class*="alertTitle"],
+body[data-theme="dark"] span[class*="envName"],
+body[data-theme="dark"] span[class*="statValue"] {
+  color: #ffffff !important;
+  border-bottom-color: #262626 !important;
+}
+
+/* Subtitles/Muted text */
+body[data-theme="dark"] p[class*="pageSubtitle"],
+body[data-theme="dark"] span[class*="envDesc"],
+body[data-theme="dark"] span[class*="statLabel"],
+body[data-theme="dark"] p[class*="alertMessage"],
+body[data-theme="dark"] td[class*="textMuted"] {
+  color: #a3a3a3 !important;
+}
+
+/* Tables */
+body[data-theme="dark"] table[class*="historyTable"] th {
+  background-color: #0a0a0a !important;
+  color: #a3a3a3 !important;
+  border-bottom: 1px solid #262626 !important;
+}
+body[data-theme="dark"] table[class*="historyTable"] td {
+  border-bottom: 1px solid #262626 !important;
+  color: #d4d4d4 !important;
+}
+body[data-theme="dark"] table[class*="historyTable"] tbody tr:hover {
+  background-color: #1f1f1f !important;
+}
+
+/* Inputs / Search / Selects */
+body[data-theme="dark"] input,
+body[data-theme="dark"] textarea,
+body[data-theme="dark"] select {
+  background-color: #0a0a0a !important;
+  color: #ffffff !important;
+  border: 1px solid #262626 !important;
+}
+body[data-theme="dark"] input[disabled],
+body[data-theme="dark"] textarea[disabled],
+body[data-theme="dark"] select[disabled] {
+  background-color: #141414 !important;
+  color: #737373 !important;
+}
+
+/* Dropdown Headers */
+body[data-theme="dark"] div[class*="dropdownHeader"] {
+  background-color: #0a0a0a !important;
+  border-bottom: 1px solid #262626 !important;
+}
+body[data-theme="dark"] div[class*="dropdownItem"]:hover {
+  background-color: #1f1f1f !important;
+}
+body[data-theme="dark"] hr[class*="dropdownDivider"] {
+  border-top-color: #262626 !important;
+}
+
+body[data-theme="dark"] button[class*="iconBtn"],
+body[data-theme="dark"] button[class*="secondaryBtn"],
+body[data-theme="dark"] button[class*="btnCancel"] {
+  color: #d4d4d4 !important;
+}
+body[data-theme="dark"] button[class*="btnCancel"] {
+  background-color: #262626 !important;
+}
+body[data-theme="dark"] button[class*="btnCancel"]:hover {
+  background-color: #404040 !important;
+}
+
+/* NEW FLAT UI SIDEBAR OVERRIDES */
+body[data-theme="dark"] div[class*="brandTitle"] h2 {
+  color: #ededed !important;
+}
+body[data-theme="dark"] button[class*="brandNotifBtn"] {
+  border-color: #262626 !important;
+  color: #a3a3a3 !important;
+}
+body[data-theme="dark"] button[class*="brandNotifBtn"]:hover {
+  background-color: #1f1f1f !important;
+  color: #ededed !important;
+}
+body[data-theme="dark"] a[class*="navLink"] {
+  color: #a3a3a3 !important;
+}
+body[data-theme="dark"] a[class*="navLink"]:hover {
+  background-color: #141414 !important;
+  color: #ededed !important;
+}
+body[data-theme="dark"] a[class*="navLink"][class*="active"] {
+  background-color: #1f1f1f !important;
+  border-color: #262626 !important;
+  color: #ededed !important;
+}
+body[data-theme="dark"] a[class*="navLink"] svg {
+  color: #737373 !important;
+}
+body[data-theme="dark"] a[class*="navLink"].active svg {
+  color: #ededed !important;
+}
+
+body[data-theme="dark"] div[class*="profileWidget"]:hover {
+  background-color: #1f1f1f !important;
+}
+body[data-theme="dark"] div[class*="profileWidgetAvatar"] {
+  background-color: #262626 !important;
+  color: #ededed !important;
+}
+body[data-theme="dark"] span[class*="userName"] {
+  color: #ededed !important;
+}
+body[data-theme="dark"] span[class*="userEmail"] {
+  color: #737373 !important;
+}
+body[data-theme="dark"] div[class*="historySection"],
+body[data-theme="dark"] aside[class*="sidebar"] {
+  border-right-color: #262626 !important;
+}
