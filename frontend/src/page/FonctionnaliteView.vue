@@ -3,10 +3,7 @@ import { ref } from 'vue'
 import { Plus, List, Trash2, CheckCircle } from 'lucide-vue-next'
 import AppLayout from '../components/AppLayout.vue'
 
-const fonctionnalites = ref([
-  { id: 1, name: 'Gestion des rôles', description: 'Permet de configurer les rôles', active: true },
-  { id: 2, name: 'Audit', description: 'Surveillance des actions', active: true }
-])
+const fonctionnalites = ref([])
 
 </script>
 

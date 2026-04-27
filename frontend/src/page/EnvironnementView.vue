@@ -101,11 +101,21 @@ const saveNewEnv = async () => {
      
      progressValue.value = 50;
 
-     await axios.post(`${API_URL}/environnements/`, payload)
+     const response = await axios.post(`${API_URL}/environnements/`, payload)
+     const envData = response.data
      
+     progressValue.value = 75;
+
+     // Lancement de la découverte des serveurs depuis CentralParam
+     try {
+         await axios.post(`${API_URL}/environnements/${envData.environnement_id}/decouvrir-serveurs`)
+     } catch (discoveryErr) {
+         console.warn("Erreur lors de la découverte des serveurs:", discoveryErr)
+     }
+
      progressValue.value = 100;
      isAdding.value = false;
-     addSuccessMessage.value = `Environnement enregistré avec succès !`
+     addSuccessMessage.value = `Environnement et serveurs enregistrés avec succès !`
      
      await fetchEnvironments()
      
@@ -115,7 +125,7 @@ const saveNewEnv = async () => {
      
   } catch (err) {
      isAdding.value = false
-     addErrorMessage.value = err.response?.data?.detail || "Erreur lors de la validation du service : assurez-vous que le CentralParam est WCF valide."
+     addErrorMessage.value = err.response?.data?.detail || "Erreur lors de la création de l'environnement."
   }
 }
 
@@ -148,8 +158,13 @@ const updateEnv = async () => {
 }
 
 const deleteEnv = async (id) => {
-    if (confirm('La suppression n\'est pas encore supportée par le backend. Simuler localement ?')) {
-        environments.value = environments.value.filter(e => e.id !== id)
+    if (confirm('Confirmer la suppression de cet environnement ? Les serveurs associés seront également supprimés.')) {
+        try {
+            await axios.delete(`${API_URL}/environnements/${id}`)
+            environments.value = environments.value.filter(e => e.id !== id)
+        } catch (err) {
+            alert(err.response?.data?.detail || 'Erreur lors de la suppression.')
+        }
     }
 }
 </script>
@@ -211,9 +226,13 @@ const deleteEnv = async (id) => {
           </div>
           <div v-if="addErrorMessage" style="color: red; padding: 10px; background: rgba(255,0,0,0.1); border-radius: 4px; margin-bottom: 10px;">
             <p>{{ addErrorMessage }}</p>
+            <div style="display:flex; gap:8px; margin-top:8px;">
+              <button type="button" :class="$style.btnCancel" @click="addErrorMessage = ''">Modifier et réessayer</button>
+              <button type="button" :class="$style.btnCancel" @click="showAddModal = false">Fermer</button>
+            </div>
           </div>
 
-          <form v-else @submit.prevent="saveNewEnv" :class="$style.modalForm">
+          <form v-if="!addErrorMessage && !addSuccessMessage" @submit.prevent="saveNewEnv" :class="$style.modalForm">
             <div :class="$style.formGroup">
               <label>Nom</label>
               <input v-model="newEnv.name" type="text" placeholder="Ex: Production" required :disabled="isAdding" />
@@ -272,12 +291,11 @@ const deleteEnv = async (id) => {
               <input v-model="selectedEnv.name" type="text" :disabled="!isEditing || isUpdating" />
             </div>
             <div :class="$style.formGroup">
-              <label>Type / Groupe</label>
-              <select v-model="selectedEnv.type" :disabled="!isEditing || isUpdating">
-                <option value="Production">Production</option>
-                <option value="CIE">CIE</option>
-                <option value="SODECI">SODECI</option>
-                <option value="Autre">Autre</option>
+              <label>Catégorie</label>
+              <select v-model="selectedEnv.categorie_id" :disabled="!isEditing || isUpdating">
+                <option v-for="cat in categories" :key="cat.categorie_id" :value="cat.categorie_id">
+                  {{ cat.nom }}
+                </option>
               </select>
             </div>
             <div :class="$style.formGroup">

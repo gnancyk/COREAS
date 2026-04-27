@@ -1,11 +1,25 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api/v1', // À ajuster selon l'URL du backend
+  baseURL: 'http://localhost:8000',
   headers: {
     'Content-Type': 'application/json'
   }
 })
+
+// Intercepteur pour ajouter le token à chaque requête
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
+)
 
 export const login = async (username, password) => {
   try {
@@ -20,11 +34,18 @@ export const login = async (username, password) => {
 }
 
 export const logoutUser = async () => {
-    try {
-        await api.post('/auth/logout')
-    } catch (e) {
-        console.warn("Backend logout endpoint failed or not fully implemented, clearing local storage...", e)
-    }
+  try {
+    // On tente d'avertir le backend (blacklist du token)
+    await api.post('/auth/logout')
+  } catch (e) {
+    console.warn("Backend logout failed or token already invalid", e)
+  } finally {
+    // Quoi qu'il arrive, on vide le stockage local pour déconnecter l'utilisateur
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    // Optionnel : rediriger vers /login
+    window.location.href = '/login'
+  }
 }
 
 export default api

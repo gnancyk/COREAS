@@ -5,7 +5,8 @@ from app.core.database import get_db
 from app.core.security import get_current_user
 from app.schemas.environment import (
     CategorieCreate, CategorieResponse,
-    EnvironnementCreate, EnvironnementResponse
+    EnvironnementCreate, EnvironnementResponse,
+    ServeurResponse
 )
 from app.models.environment import Categorie, Environnement, Serveur, Role
 from app.services.central_param.service import CentralParamService
@@ -42,6 +43,43 @@ async def creer_categorie(
     db.commit()
     db.refresh(nouvelle_categorie)
     return nouvelle_categorie
+
+@router.put("/categories/{categorie_id}", response_model=CategorieResponse)
+async def modifier_categorie(
+    categorie_id: str,
+    payload: CategorieCreate,
+    db: Session = Depends(get_db),
+    current_user: str = Depends(get_current_user)
+):
+    """
+    Modifie le nom d'une catégorie.
+    """
+    cat = db.query(Categorie).filter(Categorie.categorie_id == categorie_id).first()
+    if not cat:
+        raise HTTPException(status_code=404, detail="Catégorie introuvable.")
+    if db.query(Categorie).filter(Categorie.nom == payload.nom, Categorie.categorie_id != categorie_id).first():
+        raise HTTPException(status_code=400, detail="Ce nom de catégorie existe déjà.")
+    cat.nom = payload.nom
+    db.commit()
+    db.refresh(cat)
+    return cat
+
+@router.delete("/categories/{categorie_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def supprimer_categorie(
+    categorie_id: str,
+    db: Session = Depends(get_db),
+    current_user: str = Depends(get_current_user)
+):
+    """
+    Supprime une catégorie (si aucun environnement n'y est lié).
+    """
+    cat = db.query(Categorie).filter(Categorie.categorie_id == categorie_id).first()
+    if not cat:
+        raise HTTPException(status_code=404, detail="Catégorie introuvable.")
+    if db.query(Environnement).filter(Environnement.categorie_id == categorie_id).first():
+        raise HTTPException(status_code=400, detail="Impossible de supprimer : des environnements sont liés à cette catégorie.")
+    db.delete(cat)
+    db.commit()
 
 # --- ENVIRONNEMENTS ---
 
@@ -107,6 +145,49 @@ async def creer_environnement(
     db.add(nouvel_env)
     db.commit()
     return nouvel_env
+
+@router.get("/serveurs", response_model=List[ServeurResponse])
+async def lister_serveurs(
+    db: Session = Depends(get_db),
+    current_user: str = Depends(get_current_user)
+):
+    """
+    Récupère tous les serveurs configurés.
+    """
+    from sqlalchemy.orm import joinedload
+    return db.query(Serveur).options(joinedload(Serveur.role), joinedload(Serveur.environnement)).all()
+
+@router.delete("/serveurs/{serveur_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def supprimer_serveur(
+    serveur_id: str,
+    db: Session = Depends(get_db),
+    current_user: str = Depends(get_current_user)
+):
+    """
+    Supprime un serveur.
+    """
+    srv = db.query(Serveur).filter(Serveur.serveur_id == serveur_id).first()
+    if not srv:
+        raise HTTPException(status_code=404, detail="Serveur introuvable.")
+    db.delete(srv)
+    db.commit()
+
+@router.delete("/{environnement_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def supprimer_environnement(
+    environnement_id: str,
+    db: Session = Depends(get_db),
+    current_user: str = Depends(get_current_user)
+):
+    """
+    Supprime un environnement et ses serveurs associés.
+    """
+    env = db.query(Environnement).filter(Environnement.environnement_id == environnement_id).first()
+    if not env:
+        raise HTTPException(status_code=404, detail="Environnement introuvable.")
+    # Supprimer les serveurs liés en cascade
+    db.query(Serveur).filter(Serveur.environnement_id == environnement_id).delete()
+    db.delete(env)
+    db.commit()
 
 # --- DECOUVERTE SERVEURS ---
 

@@ -29,3 +29,31 @@ class EnvironnementResponse(EnvironnementBase):
 
     class Config:
         from_attributes = True
+
+class RoleBase(BaseModel):
+    nom: str
+
+class RoleResponse(RoleBase):
+    role_id: UUID
+
+    class Config:
+        from_attributes = True
+
+class ServeurBase(BaseModel):
+    nom_serveur: str
+    nom_hote: Optional[str] = None
+    adresse_ip: Optional[str] = None
+    role_id: UUID
+    environnement_id: UUID
+    port_winrm: Optional[int] = 5985
+    port: Optional[int] = None
+    identifiant: Optional[str] = None
+    mot_de_passe: Optional[str] = None
+
+class ServeurResponse(ServeurBase):
+    serveur_id: UUID
+    role: Optional[RoleResponse] = None
+    environnement: Optional[EnvironnementResponse] = None
+
+    class Config:
+        from_attributes = True

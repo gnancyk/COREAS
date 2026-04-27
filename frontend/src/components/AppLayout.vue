@@ -43,11 +43,7 @@ const toggleProfile = () => {
 
 // Notifications dropdown
 const showNotifMenu = ref(false)
-const notifications = ref([
-  { id: 1, text: "La vérification 'PROD-01' a échoué.", time: "Il y a 10 min", read: false },
-  { id: 2, text: "Mise à jour du serveur réussie.", time: "Il y a 1 heure", read: false },
-  { id: 3, text: "Nouveau module ajouté.", time: "Hier", read: true }
-])
+const notifications = ref([])
 const unreadCount = computed(() => notifications.value.filter(n => !n.read).length)
 
 const toggleNotif = () => {

@@ -3,44 +3,31 @@ import { ref, computed } from 'vue'
 import { CheckCircle, Plus, Globe, ShieldCheck, PlayCircle } from 'lucide-vue-next'
 import AppLayout from '../components/AppLayout.vue'
 
-// --- Mock Data ---
-const environments = ref([
-  { id: 1, name: 'Production', urlCentralParam: 'http://prod.central/param', type: 'Production' },
-  { id: 2, name: 'Pré-production', urlCentralParam: 'http://preprod.central/param', type: 'CIE' },
-  { id: 3, name: 'Staging', urlCentralParam: 'http://staging.central/param', type: 'SODECI' }
-])
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
-// Les checkpoints sont maintenant intégrés directement sous chaque module.
-const modulesDisponibles = ref([
-  { 
-    id: 'm1', name: 'Intégrité Base de données', 
-    checkpoints: [
-      { id: 'c1', name: 'Vérification de la santé du cluster', needsExtra: false, extraLabel: '', extraValue: '' },
-      { id: 'c2', name: 'Tests de cohérence mémoire', needsExtra: true, extraLabel: 'Seuil mémoire (GB)', extraValue: '' },
-      { id: 'c3', name: 'Vérification backups', needsExtra: true, extraLabel: 'Chemin dossier backup', extraValue: '' }
-    ] 
-  },
-  { 
-    id: 'm2', name: 'Sécurité Réseau', 
-    checkpoints: [
-      { id: 'c4', name: 'Scan des ports', needsExtra: false, extraLabel: '', extraValue: '' },
-      { id: 'c5', name: 'Vérification règles Firewall', needsExtra: true, extraLabel: 'IP à tester', extraValue: '' }
-    ] 
-  },
-  { 
-    id: 'm3', name: 'Performances API', 
-    checkpoints: [
-      { id: 'c6', name: 'Test de charge basique', needsExtra: true, extraLabel: 'Nb Utilisateurs virtuels', extraValue: '1000' },
-      { id: 'c7', name: 'Latence des endpoints', needsExtra: false, extraLabel: '', extraValue: '' }
-    ] 
-  }
-])
+// --- Data ---
+const environments = ref([])
+
+// Remarque : Les modules et checkpoints devraient être chargés depuis une API (ex: GET /modules/ avec leurs sous-contrôles)
+const modulesDisponibles = ref([])
 
 // --- State ---
 const selectedEnvId = ref('')
 const selectedModules = ref([])
 // selectedCheckpoints -> stocke l'id
 const selectedCheckpoints = ref([])
+
+import { onMounted } from 'vue'
+import axios from 'axios'
+
+onMounted(async () => {
+  try {
+    const res = await axios.get(`${API_URL}/environnements/`)
+    environments.value = res.data.map(e => ({ id: e.environnement_id, name: e.nom }))
+  } catch(e) {
+    console.error("Erreur chargement environnements :", e)
+  }
+})
 
 const showAddEnvModal = ref(false)
 const newEnv = ref({ name: '', urlCentralParam: '', description: '', type: 'Production' })

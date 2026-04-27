@@ -1,19 +1,45 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import axios from 'axios'
 import { Plus, Server, Trash2, CheckCircle, ChevronDown } from 'lucide-vue-next'
 import AppLayout from '../components/AppLayout.vue'
 
-const serveurs = ref([
-  { id: 1, name: 'DB-PROD-01', ip: '192.168.1.10', username: 'admin', password: '***', description: 'Serveur de base de données principal', type: 'Base de données', env_id: 1 },
-  { id: 2, name: 'MAIL-EX-01', ip: '192.168.1.50', username: 'mail_admin', password: '***', description: 'Serveur de messagerie Exchange', type: 'Messagerie', env_id: null },
-  { id: 3, name: 'WEB-FRONT-01', ip: '192.168.1.20', username: 'root', password: '***', description: 'Serveur frontal Nginx', type: 'Web', env_id: 2 }
-])
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
-const environnements = ref([
-  { id: 1, name: 'Production Principale' },
-  { id: 2, name: 'CIE Test' },
-  { id: 3, name: 'SODECI Recette' }
-])
+const serveurs = ref([])
+const environnements = ref([])
+
+onMounted(async () => {
+  await fetchEnvironnements()
+  await fetchServeurs()
+})
+
+const fetchEnvironnements = async () => {
+    try {
+        const res = await axios.get(`${API_URL}/environnements/`)
+        environnements.value = res.data.map(e => ({ id: e.environnement_id, name: e.nom }))
+    } catch(e) {
+        console.error("Erreur environnements:", e)
+    }
+}
+
+const fetchServeurs = async () => {
+    try {
+        const res = await axios.get(`${API_URL}/environnements/serveurs`)
+        serveurs.value = res.data.map(srv => ({
+            id: srv.serveur_id,
+            name: srv.nom_serveur,
+            ip: srv.adresse_ip || srv.nom_hote || 'N/A',
+            username: srv.identifiant || '',
+            password: srv.mot_de_passe || '',
+            description: srv.description || '',
+            type: srv.role ? srv.role.nom : 'Autre',
+            env_id: srv.environnement_id
+        }))
+    } catch(e) {
+        console.error("Erreur serveurs:", e)
+    }
+}
 
 const openEnvironments = ref(new Set())
 const toggleEnv = (key) => {
@@ -70,9 +96,14 @@ const isEditing = ref(false)
 const isUpdating = ref(false)
 const updateSuccessMessage = ref('')
 
-const deleteSrv = (id) => {
-  if (confirm('Êtes-vous sûr de vouloir supprimer ce serveur ?')) {
-    serveurs.value = serveurs.value.filter(s => s.id !== id)
+const deleteSrv = async (id) => {
+  if (confirm('Confirmer la suppression de ce serveur ?')) {
+    try {
+      await axios.delete(`${API_URL}/environnements/serveurs/${id}`)
+      serveurs.value = serveurs.value.filter(s => s.id !== id)
+    } catch (err) {
+      alert(err.response?.data?.detail || 'Erreur lors de la suppression.')
+    }
   }
 }
 

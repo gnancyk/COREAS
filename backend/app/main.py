@@ -26,14 +26,13 @@ app.add_middleware(
 )
 
 # Inclusion des routeurs modulaires
-API_PREFIX = "/api/v1"
-app.include_router(auth_router, prefix=API_PREFIX)
-app.include_router(crm_router, prefix=API_PREFIX)
-app.include_router(sql_router, prefix=API_PREFIX)
-app.include_router(infra_router, prefix=API_PREFIX)
-app.include_router(central_param_router, prefix=API_PREFIX)
-app.include_router(batch_router, prefix=API_PREFIX)
-app.include_router(environment_router, prefix=API_PREFIX)
+app.include_router(auth_router)
+app.include_router(crm_router)
+app.include_router(sql_router)
+app.include_router(infra_router)
+app.include_router(central_param_router)
+app.include_router(batch_router)
+app.include_router(environment_router)
 
 @app.get("/")
 async def root():
