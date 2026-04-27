@@ -126,6 +126,30 @@ class BatchService:
         return results
 
     @staticmethod
+    def verifier_sante_http(urls: List[str]) -> List[Dict]:
+        """
+        Vérifie les réponses HTTP (200 OK) pour une liste d'URLs.
+        """
+        results = []
+        for url in urls:
+            try:
+                response = requests.get(url, timeout=10)
+                results.append({
+                    "url": url,
+                    "status_code": response.status_code,
+                    "is_healthy": response.status_code == 200,
+                    "message": "En ligne" if response.status_code == 200 else f"Erreur HTTP {response.status_code}"
+                })
+            except Exception as e:
+                results.append({
+                    "url": url,
+                    "status_code": 0,
+                    "is_healthy": False,
+                    "message": str(e)
+                })
+        return results
+
+    @staticmethod
     def auditer_dynamique_saphir(servers: List[str], search_roots: List[str], username: Optional[str] = None, password: Optional[str] = None) -> List[Dict]:
         """
         Audit en mode découverte automatique (recherche .config, critères et pools).
