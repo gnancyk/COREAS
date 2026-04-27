@@ -116,6 +116,12 @@ const toggleModule = (mId) => {
     })
   } else {
     selectedModules.value.push(mId)
+    const mod = modulesDisponibles.value.find(m => m.id === mId)
+    mod.checkpoints.forEach(cp => {
+      if (!selectedCheckpoints.value.includes(cp.id)) {
+        selectedCheckpoints.value.push(cp.id)
+      }
+    })
   }
 }
 

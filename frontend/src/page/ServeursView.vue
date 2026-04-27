@@ -1,21 +1,44 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { Plus, Server, Trash2, CheckCircle } from 'lucide-vue-next'
+import { Plus, Server, Trash2, CheckCircle, ChevronDown } from 'lucide-vue-next'
 import AppLayout from '../components/AppLayout.vue'
 
 const serveurs = ref([
-  { id: 1, name: 'DB-PROD-01', ip: '192.168.1.10', username: 'admin', password: '***', description: 'Serveur de base de données principal', type: 'Base de données' },
-  { id: 2, name: 'MAIL-EX-01', ip: '192.168.1.50', username: 'mail_admin', password: '***', description: 'Serveur de messagerie Exchange', type: 'Messagerie' },
-  { id: 3, name: 'WEB-FRONT-01', ip: '192.168.1.20', username: 'root', password: '***', description: 'Serveur frontal Nginx', type: 'Web' }
+  { id: 1, name: 'DB-PROD-01', ip: '192.168.1.10', username: 'admin', password: '***', description: 'Serveur de base de données principal', type: 'Base de données', env_id: 1 },
+  { id: 2, name: 'MAIL-EX-01', ip: '192.168.1.50', username: 'mail_admin', password: '***', description: 'Serveur de messagerie Exchange', type: 'Messagerie', env_id: null },
+  { id: 3, name: 'WEB-FRONT-01', ip: '192.168.1.20', username: 'root', password: '***', description: 'Serveur frontal Nginx', type: 'Web', env_id: 2 }
 ])
 
-const groupedServeurs = computed(() => {
-  return serveurs.value.reduce((groups, srv) => {
-    const t = srv.type || 'Non classé'
-    if (!groups[t]) groups[t] = []
-    groups[t].push(srv)
-    return groups
-  }, {})
+const environnements = ref([
+  { id: 1, name: 'Production Principale' },
+  { id: 2, name: 'CIE Test' },
+  { id: 3, name: 'SODECI Recette' }
+])
+
+const openEnvironments = ref(new Set())
+const toggleEnv = (key) => {
+  const newSet = new Set(openEnvironments.value)
+  if(newSet.has(key)) newSet.delete(key)
+  else newSet.add(key)
+  openEnvironments.value = newSet
+}
+
+const serveursGroupedByEnv = computed(() => {
+  const groups = {}
+  environnements.value.forEach(env => {
+    groups[env.id] = { name: env.name, serveurs: [] }
+  })
+  groups['Autre'] = { name: 'Autre (Non assigné)', serveurs: [] }
+  
+  serveurs.value.forEach(srv => {
+    if (srv.env_id && groups[srv.env_id]) {
+        groups[srv.env_id].serveurs.push(srv)
+    } else {
+        groups['Autre'].serveurs.push(srv)
+    }
+  })
+
+  return groups
 })
 
 // Progress utility
@@ -125,12 +148,19 @@ const updateSrv = () => {
     </div>
 
     <div v-else :class="$style.groupedListWrapper">
-      <div v-for="(srvs, typeGroup) in groupedServeurs" :key="typeGroup" :class="$style.groupSection">
-        <h3 :class="$style.groupTitle">{{ typeGroup }}</h3>
+      <div v-for="(group, key) in serveursGroupedByEnv" :key="key" :class="$style.groupSection">
+        <div :class="$style.groupHeader" @click="toggleEnv(key)">
+          <h3 :class="$style.groupTitle">{{ group.name }} ({{ group.serveurs.length }})</h3>
+          <ChevronDown :class="[$style.chevronIcon, { [$style.rotatedIcon]: openEnvironments.has(key) }]" :size="20"/>
+        </div>
         
-        <div :class="$style.listContainer">
+        <div v-show="openEnvironments.has(key)" :class="$style.listContainer">
+          <!-- Si la liste est vide -->
+          <div v-if="group.serveurs.length === 0" :class="$style.emptyStateMini">
+             Aucun serveur dans ce groupe.
+          </div>
           <div 
-            v-for="srv in srvs" 
+            v-for="srv in group.serveurs" 
             :key="srv.id" 
             :class="$style.envItem" 
             @click="openInfoModal(srv)"
@@ -141,7 +171,7 @@ const updateSrv = () => {
               </div>
               <div :class="$style.envText">
                 <span :class="$style.envName">{{ srv.name }}</span>
-                <span :class="$style.envDesc">{{ srv.ip }} - {{ srv.description }}</span>
+                <span :class="$style.envDesc">{{ srv.ip }} - Type: {{ srv.type }}</span>
               </div>
             </div>
             <button :class="$style.deleteBtn" @click.stop="deleteSrv(srv.id)" title="Supprimer">

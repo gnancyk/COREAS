@@ -1,13 +1,46 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import axios from 'axios'
 import { Plus, Globe, Trash2, CheckCircle } from 'lucide-vue-next'
 import AppLayout from '../components/AppLayout.vue'
 
-const environments = ref([
-  { id: 1, name: 'Production Principale', urlCentralParam: 'http://prod.central/param', description: 'Environnement de production critique', type: 'Production' },
-  { id: 2, name: 'CIE Test', urlCentralParam: 'http://preprod.central/param', description: 'Environnement de test', type: 'CIE' },
-  { id: 3, name: 'SODECI Recette', urlCentralParam: 'http://staging.central/param', description: 'Validation QA', type: 'SODECI' }
-])
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+
+const environments = ref([])
+const categories = ref([])
+
+onMounted(async () => {
+    await fetchCategories()
+    await fetchEnvironments()
+})
+
+const fetchCategories = async () => {
+    try {
+        const res = await axios.get(`${API_URL}/environnements/categories`)
+        categories.value = res.data
+    } catch(e) {
+        console.error("Erreur chargement categories:", e)
+    }
+}
+
+const fetchEnvironments = async () => {
+    try {
+        const res = await axios.get(`${API_URL}/environnements/`)
+        environments.value = res.data.map(env => {
+            const cat = categories.value.find(c => c.categorie_id === env.categorie_id)
+            return {
+                id: env.environnement_id,
+                name: env.nom,
+                urlCentralParam: env.url_central_param,
+                description: '',
+                type: cat ? cat.nom : 'Autre',
+                categorie_id: env.categorie_id
+            }
+        })
+    } catch(e) {
+        console.error("Erreur chargement environnements:", e)
+    }
+}
 
 const groupedEnvironments = computed(() => {
   return environments.value.reduce((groups, env) => {
@@ -29,82 +62,95 @@ const simulateProgress = (duration, onComplete) => {
     if (progressValue.value >= 100) {
       clearInterval(timer)
       progressValue.value = 100
-      onComplete()
+      if (onComplete) onComplete()
     }
   }, interval)
 }
 
 // Add Modal State
 const showAddModal = ref(false)
-const newEnv = ref({ name: '', urlCentralParam: '', description: '', type: 'Production' })
+const newEnv = ref({ name: '', urlCentralParam: '', description: '', categorie_id: '' })
 const isAdding = ref(false)
 const addSuccessMessage = ref('')
+const addErrorMessage = ref('')
 
-// ... etc rest of logic unmodified
+const openAddModal = () => {
+  showAddModal.value = true
+  addSuccessMessage.value = ''
+  addErrorMessage.value = ''
+  isAdding.value = false
+  progressValue.value = 0
+  if (categories.value.length > 0) {
+     newEnv.value = { name: '', urlCentralParam: '', description: '', categorie_id: categories.value[0].categorie_id }
+  } else {
+     newEnv.value = { name: '', urlCentralParam: '', description: '', categorie_id: '' }
+  }
+}
+
+const saveNewEnv = async () => {
+  isAdding.value = true
+  addSuccessMessage.value = ''
+  addErrorMessage.value = ''
+  
+  try {
+     const payload = {
+        nom: newEnv.value.name,
+        url_central_param: newEnv.value.urlCentralParam,
+        categorie_id: newEnv.value.categorie_id
+     }
+     
+     progressValue.value = 50;
+
+     await axios.post(`${API_URL}/environnements/`, payload)
+     
+     progressValue.value = 100;
+     isAdding.value = false;
+     addSuccessMessage.value = `Environnement enregistré avec succès !`
+     
+     await fetchEnvironments()
+     
+     setTimeout(() => {
+        showAddModal.value = false
+     }, 1500)
+     
+  } catch (err) {
+     isAdding.value = false
+     addErrorMessage.value = err.response?.data?.detail || "Erreur lors de la validation du service : assurez-vous que le CentralParam est WCF valide."
+  }
+}
+
 const showInfoModal = ref(false)
 const selectedEnv = ref(null)
 const isEditing = ref(false)
 const isUpdating = ref(false)
 const updateSuccessMessage = ref('')
-
-const deleteEnv = (id) => {
-  if (confirm('Êtes-vous sûr de vouloir supprimer cet environnement ?')) {
-    environments.value = environments.value.filter(e => e.id !== id)
-  }
-}
-
-const openAddModal = () => {
-  showAddModal.value = true
-  addSuccessMessage.value = ''
-  isAdding.value = false
-  progressValue.value = 0
-  newEnv.value = { name: '', urlCentralParam: '', description: '', type: 'Production' }
-}
-
-const saveNewEnv = () => {
-  isAdding.value = true
-  addSuccessMessage.value = ''
-  
-  simulateProgress(1500, () => {
-    isAdding.value = false
-    const numParams = Math.floor(Math.random() * 10) + 1
-    addSuccessMessage.value = `Environnement enregistré parfaitement avec ${numParams} paramètre(s) issus du centralparam.`
-    
-    setTimeout(() => {
-      environments.value.push({
-        id: Date.now(),
-        ...newEnv.value
-      })
-      showAddModal.value = false
-    }, 2000)
-  })
-}
+const updateErrorMessage = ref('')
 
 const openInfoModal = (env) => {
-  selectedEnv.value = { ...env }
+  selectedEnv.value = { ...env, categorie_id: env.categorie_id }
   isEditing.value = false
   isUpdating.value = false
   updateSuccessMessage.value = ''
+  updateErrorMessage.value = ''
   progressValue.value = 0
   showInfoModal.value = true
 }
 
-const updateEnv = () => {
-  isUpdating.value = true
-  updateSuccessMessage.value = ''
-  
-  simulateProgress(1200, () => {
-    isUpdating.value = false
-    updateSuccessMessage.value = 'Modification valable !'
-    const index = environments.value.findIndex(e => e.id === selectedEnv.value.id)
-    if(index !== -1) {
-      environments.value[index] = { ...selectedEnv.value }
-    }
+const updateEnv = async () => {
+    isUpdating.value = true
+    updateSuccessMessage.value = ''
+    updateErrorMessage.value = ''
     
-    setTimeout(() => {
-      showInfoModal.value = false
-    }, 1500)
-  })
+    simulateProgress(1000, () => {
+        isUpdating.value = false
+        updateErrorMessage.value = "Modification non supportée par le backend pour le moment."
+    })
+}
+
+const deleteEnv = async (id) => {
+    if (confirm('La suppression n\'est pas encore supportée par le backend. Simuler localement ?')) {
+        environments.value = environments.value.filter(e => e.id !== id)
+    }
 }
 </script>
 
@@ -163,6 +209,9 @@ const updateEnv = () => {
             <CheckCircle :size="28" :class="$style.successIcon" />
             <p>{{ addSuccessMessage }}</p>
           </div>
+          <div v-if="addErrorMessage" style="color: red; padding: 10px; background: rgba(255,0,0,0.1); border-radius: 4px; margin-bottom: 10px;">
+            <p>{{ addErrorMessage }}</p>
+          </div>
 
           <form v-else @submit.prevent="saveNewEnv" :class="$style.modalForm">
             <div :class="$style.formGroup">
@@ -170,12 +219,11 @@ const updateEnv = () => {
               <input v-model="newEnv.name" type="text" placeholder="Ex: Production" required :disabled="isAdding" />
             </div>
             <div :class="$style.formGroup">
-              <label>Type / Groupe</label>
-              <select v-model="newEnv.type" required :disabled="isAdding">
-                <option value="Production">Production</option>
-                <option value="CIE">CIE</option>
-                <option value="SODECI">SODECI</option>
-                <option value="Autre">Autre</option>
+              <label>Catégorie</label>
+              <select v-model="newEnv.categorie_id" required :disabled="isAdding">
+                <option v-for="cat in categories" :key="cat.categorie_id" :value="cat.categorie_id">
+                    {{ cat.nom }}
+                </option>
               </select>
             </div>
             <div :class="$style.formGroup">
@@ -213,6 +261,9 @@ const updateEnv = () => {
           <div v-if="updateSuccessMessage" :class="$style.successBox">
             <CheckCircle :size="28" :class="$style.successIcon" />
             <p>{{ updateSuccessMessage }}</p>
+          </div>
+          <div v-if="updateErrorMessage" style="color: red; padding: 10px; background: rgba(255,0,0,0.1); border-radius: 4px; margin-bottom: 10px;">
+            <p>{{ updateErrorMessage }}</p>
           </div>
 
           <div v-else :class="$style.modalForm">

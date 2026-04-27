@@ -4,6 +4,7 @@ import DashboardView from '../page/DashboardView.vue'
 import EnvironnementView from '../page/EnvironnementView.vue'
 import VerificationView from '../page/VerificationView.vue'
 import ServeursView from '../page/ServeursView.vue'
+import FonctionnaliteView from '../page/FonctionnaliteView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,11 @@ const router = createRouter({
       path: '/verification',
       name: 'verification',
       component: VerificationView
+    },
+    {
+      path: '/fonctionnalite',
+      name: 'fonctionnalite',
+      component: FonctionnaliteView
     },
     {
       path: '/',

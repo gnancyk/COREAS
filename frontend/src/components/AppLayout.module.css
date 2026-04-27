@@ -24,18 +24,23 @@
   padding-bottom: 24px;
 }
 
-.logoGs2e {
-  height: 40px;
-  width: auto;
-  object-fit: contain;
-  margin-bottom: 12px;
-}
-
-.brandTitleWrapper {
+.brandHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
+}
+
+.brandLogoTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logoGs2e {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
 }
 
 .brandTitle h2 {
@@ -203,7 +208,7 @@
   width: 320px;
   background-color: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   border: 1px solid #e2e8f0;
   z-index: 100;
   overflow: hidden;
@@ -211,8 +216,15 @@
 }
 
 @keyframes fadeSlide {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .dropdownHeader {
@@ -370,8 +382,15 @@
 }
 
 @keyframes modalIn {
-  from { opacity: 0; transform: translateY(20px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .settingsTitle {
@@ -427,7 +446,7 @@
   top: 2px;
   left: 2px;
   transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .toggleSwitch[data-active="true"] .toggleKnob {
@@ -525,17 +544,21 @@
   border-radius: 4px;
   font-size: 0.9rem;
 }
+
 .profileMenuUp .menuBtn:hover {
   background-color: #f3f4f6;
   color: #111827;
 }
+
 .profileMenuUp .dangerBtn {
   color: #ef4444;
 }
+
 .profileMenuUp .dangerBtn:hover {
   color: #dc2626;
   background-color: #fef2f2;
 }
+
 .profileMenuUp .dropdownDivider {
   border-top: 1px solid #e5e7eb;
   margin: 4px 0;
@@ -547,6 +570,7 @@
   color: #111827;
   font-size: 0.9rem;
 }
+
 .profileMenuUp .profileInfo small {
   color: #6b7280;
   font-size: 0.75rem;

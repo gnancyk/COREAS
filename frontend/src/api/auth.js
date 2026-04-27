@@ -19,4 +19,12 @@ export const login = async (username, password) => {
   }
 }
 
+export const logoutUser = async () => {
+    try {
+        await api.post('/auth/logout')
+    } catch (e) {
+        console.warn("Backend logout endpoint failed or not fully implemented, clearing local storage...", e)
+    }
+}
+
 export default api

@@ -51,13 +51,34 @@
   gap: 16px;
 }
 
+.groupHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.groupHeader:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
 .groupTitle {
   font-size: 1.15rem;
   font-weight: 600;
   color: #334155;
   margin: 0;
-  border-bottom: 2px solid #e2e8f0;
-  padding-bottom: 8px;
+}
+
+.chevronIcon {
+  color: #475569;
+  transition: transform 0.2s ease;
+}
+
+.rotatedIcon {
+  transform: rotate(180deg);
 }
 
 .listContainer {
@@ -145,6 +166,15 @@
   border-radius: 12px;
   color: #64748b;
   font-size: 1.1rem;
+}
+
+.emptyStateMini {
+  padding: 16px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.95rem;
+  background-color: #f1f5f9;
+  border-radius: 8px;
 }
 
 /* Modals */

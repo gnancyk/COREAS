@@ -6,6 +6,7 @@ from app.api.v1.sql_server.router import router as sql_router
 from app.api.v1.infra.router import router as infra_router
 from app.api.v1.central_param.router import router as central_param_router
 from app.api.v1.batch.router import router as batch_router
+from app.api.v1.environment.router import router as environment_router
 from app.core.database import engine, Base
 from app.models.verification import VerificationConfigurations
 from app.models.auth import BlacklistedToken
@@ -25,12 +26,14 @@ app.add_middleware(
 )
 
 # Inclusion des routeurs modulaires
-app.include_router(auth_router)
-app.include_router(crm_router)
-app.include_router(sql_router)
-app.include_router(infra_router)
-app.include_router(central_param_router)
-app.include_router(batch_router)
+API_PREFIX = "/api/v1"
+app.include_router(auth_router, prefix=API_PREFIX)
+app.include_router(crm_router, prefix=API_PREFIX)
+app.include_router(sql_router, prefix=API_PREFIX)
+app.include_router(infra_router, prefix=API_PREFIX)
+app.include_router(central_param_router, prefix=API_PREFIX)
+app.include_router(batch_router, prefix=API_PREFIX)
+app.include_router(environment_router, prefix=API_PREFIX)
 
 @app.get("/")
 async def root():

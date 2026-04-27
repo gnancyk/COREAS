@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { logoutUser } from '../api/auth'
 import { 
   Server,
   Settings, 
@@ -19,7 +20,15 @@ import {
 const router = useRouter()
 const route = useRoute()
 
-const handleLogout = () => {
+// L'utilisateur connecté et formattage
+const userStr = localStorage.getItem('user')
+const userObj = userStr ? JSON.parse(userStr) : null
+const userNameDisplay = userObj ? (userObj.nom_complet || userObj.username || 'Utilisateur') : 'Admin'
+const userEmailDisplay = userObj ? (userObj.email || '') : 'admin@gs2e.ci'
+const userInitials = userNameDisplay.substring(0, 2).toUpperCase()
+
+const handleLogout = async () => {
+  await logoutUser()
   localStorage.removeItem('token')
   localStorage.removeItem('user')
   router.push('/login')
@@ -90,10 +99,12 @@ onUnmounted(() => {
     <!-- Sidebar -->
     <aside :class="$style.sidebar">
       <div :class="$style.brand">
-        <img src="../assets/gs2e_logo2.webp" alt="GS2E" :class="$style.logoGs2e" />
-        <div :class="$style.brandTitleWrapper">
-          <div :class="$style.brandTitle">
-            <h2>COREAS</h2>
+        <div :class="$style.brandHeader">
+          <div :class="$style.brandLogoTitle">
+            <img src="../assets/gs2e_logo2.webp" alt="GS2E" :class="$style.logoGs2e" />
+            <div :class="$style.brandTitle">
+              <h2>COREAS</h2>
+            </div>
           </div>
           
           <div :class="$style.brandNotifWrapper" data-dropdown="notifications">
@@ -130,9 +141,9 @@ onUnmounted(() => {
         <router-link to="/environnement" :class="[$style.navLink, { [$style.active]: route.path === '/environnement' }]">
           <Layers :size="20" /> Environnement
         </router-link>
-        <a href="#" :class="$style.navLink">
+        <router-link to="/fonctionnalite" :class="[$style.navLink, { [$style.active]: route.path === '/fonctionnalite' }]">
           <Layers :size="20" /> Fonctionnalité
-        </a>
+        </router-link>
         <router-link to="/serveurs" :class="[$style.navLink, { [$style.active]: route.path === '/serveurs' }]">
           <Server :size="20" /> Serveurs
         </router-link>
@@ -147,21 +158,21 @@ onUnmounted(() => {
       <div :class="$style.sidebarFooter">
         <div :class="$style.dropdownWrapper" data-dropdown="profile">
           <div :class="$style.profileWidget" @click="toggleProfile">
-            <div :class="$style.profileWidgetAvatar">AD</div>
+            <div :class="$style.profileWidgetAvatar">{{ userInitials }}</div>
             <div :class="$style.profileWidgetInfo">
-              <span :class="$style.userName">Admin</span>
-              <small :class="$style.userEmail">admin@gs2e.ci</small>
+              <span :class="$style.userName">{{ userNameDisplay }}</span>
+              <small :class="$style.userEmail">{{ userEmailDisplay }}</small>
             </div>
             <ChevronDown :size="16" />
           </div>
 
           <div v-if="showProfileMenu" :class="[$style.dropdownMenu, $style.profileMenuUp]">
             <div :class="$style.profileCard">
-              <div :class="$style.profileAvatarLg">AD</div>
+              <div :class="$style.profileAvatarLg">{{ userInitials }}</div>
               <div :class="$style.profileInfo">
-                <strong>Jean Dupont</strong>
-                <span>admin</span>
-                <small>admin@gs2e.ci</small>
+                <strong>{{ userNameDisplay }}</strong>
+                <span>Agent</span>
+                <small v-if="userEmailDisplay">{{ userEmailDisplay }}</small>
               </div>
             </div>
             <hr :class="$style.dropdownDivider" />
