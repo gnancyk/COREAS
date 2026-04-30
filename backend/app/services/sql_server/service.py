@@ -177,3 +177,30 @@ class SQLService:
                     "suspect_content": row.definition[:200] + "..."
                 })
         return results
+
+    @staticmethod
+    def verifier_param_critere(db_name: str = "gs2e_parametregenerauxbase") -> Dict:
+        """
+        Recherche le paramètre PARAMCRIT0001 dans la base spécifiée.
+        """
+        engine = SQLService._get_engine(db_name)
+        # Requête adaptée à la structure supposée
+        query = text("""
+            SELECT ParamName, ParamValue 
+            FROM [gs2e_parametregenerauxbase].[dbo].[Parameters] 
+            WHERE ParamName = 'PARAMCRIT0001'
+        """)
+        
+        try:
+            with engine.connect() as conn:
+                result = conn.execute(query).first()
+                if result:
+                    return {
+                        "exists": True,
+                        "param_name": result.ParamName,
+                        "param_value": result.ParamValue,
+                        "status": "OK"
+                    }
+                return {"exists": False, "status": "KO", "message": "Paramètre non trouvé"}
+        except Exception as e:
+            return {"exists": False, "status": "KO", "message": str(e)}

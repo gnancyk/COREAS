@@ -11,6 +11,10 @@ from app.schemas.batch import (
 )
 from app.services.batch.service import BatchService
 from app.services.infra.service import InfraService
+from sqlalchemy.orm import Session
+from app.core.database import get_db
+from app.models.environment import Environnement, Serveur, Role
+import uuid
 
 router = APIRouter(prefix="/batch", tags=["Batch & Services Audit"])
 
@@ -84,4 +88,77 @@ async def verifier_conformite_centralisation(payload: ComplianceCheckRequest, cu
         payload.username, 
         payload.password
     )
+    return {"results": results}
+
+
+@router.post("/audit/environnement/{environnement_id}", response_model=DynamicAuditResponse)
+async def auditer_environnement_dynamique(
+    environnement_id: uuid.UUID, 
+    search_roots: List[str] = ["C:\\inetpub", "C:\\Program Files\\gs2E2"],
+    db: Session = Depends(get_db), 
+    current_user: str = Depends(get_current_user)
+):
+    """
+    Lance un audit dynamique sur TOUS les serveurs d'un environnement (Zéro Saisie).
+    Récupère automatiquement les credentials en base.
+    """
+    serveurs = db.query(Serveur).filter(Serveur.environnement_id == environnement_id).all()
+    if not serveurs:
+        return {"results": []}
+    
+    results = []
+    for srv in serveurs:
+        # Filtrage : l'audit dynamique (IIS/Config) n'a de sens que sur Web ou Batch
+        role_nom = srv.role.nom.upper() if srv.role else ""
+        if "WEB" not in role_nom and "BATCH" not in role_nom:
+            continue
+
+        # Utilisation du nom d'hôte (sans instance) pour WinRM
+        target = srv.nom_hote or srv.nom_serveur or srv.adresse_ip
+        
+        srv_results = BatchService.auditer_dynamique_saphir(
+            [target], 
+            search_roots, 
+            srv.identifiant, 
+            srv.mot_de_passe
+        )
+        # On remet le nom complet pour l'affichage frontend
+        for r in srv_results:
+            r["server"] = srv.nom_serveur
+            
+        results.extend(srv_results)
+        
+    return {"results": results}
+
+@router.post("/services/environnement/{environnement_id}", response_model=ServiceCheckResponse)
+async def verifier_services_environnement(
+    environnement_id: uuid.UUID, 
+    services: List[str] = ["SAPHIRV3*", "aspnet_state", "W3SVC"],
+    db: Session = Depends(get_db), 
+    current_user: str = Depends(get_current_user)
+):
+    """
+    Vérifie les services Windows sur tous les serveurs d'un environnement (Zéro Saisie).
+    """
+    serveurs = db.query(Serveur).filter(Serveur.environnement_id == environnement_id).all()
+    if not serveurs:
+        return {"results": []}
+    
+    results = []
+    for srv in serveurs:
+        # Utilisation du nom d'hôte (sans instance) pour WinRM
+        target = srv.nom_hote or srv.nom_serveur or srv.adresse_ip
+        
+        srv_results = BatchService.verifier_services_windows(
+            [target], 
+            services, 
+            srv.identifiant, 
+            srv.mot_de_passe
+        )
+        # On remet le nom complet pour l'affichage frontend
+        for r in srv_results:
+            r["server"] = srv.nom_serveur
+            
+        results.extend(srv_results)
+        
     return {"results": results}

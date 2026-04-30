@@ -13,7 +13,11 @@ class BatchService:
         results = []
         # Support des wildcards : on entoure les noms de guillemets et on laisse PowerShell faire le matching
         service_list_str = ",".join([f"'{s}'" for s in service_names])
-        script = f"Get-Service -Name {service_list_str} -ErrorAction SilentlyContinue | Select-Object Name, DisplayName, Status | ConvertTo-Json -Compress"
+        script = f"Get-CimInstance Win32_Service -Filter \"Name LIKE '{service_names[0].replace('*', '%')}'\" | Select-Object Name, DisplayName, State, StartName | ConvertTo-Json -Compress"
+        # Note: Si plusieurs noms ou wildcards complexes, on ajuste le script
+        if len(service_names) > 1 or "*" in service_names[0]:
+            filter_parts = " OR ".join([f"Name LIKE '{s.replace('*', '%')}'" for s in service_names])
+            script = f"Get-CimInstance Win32_Service -Filter \"{filter_parts}\" | Select-Object Name, DisplayName, State, StartName | ConvertTo-Json -Compress"
         
         for server in servers:
             try:
@@ -27,28 +31,16 @@ class BatchService:
                 services_data = []
                 if result["success"] and result["stdout"]:
                     raw_data = json.loads(result["stdout"].strip())
-                    # Normalisation (si 1 seul service, c'est un dict, sinon une liste)
                     if isinstance(raw_data, dict):
                         raw_data = [raw_data]
                     
-                    # Mapping des statuts Windows (1=Stopped, 4=Running, etc.)
-                    status_map = {
-                        1: "Stopped",
-                        2: "StartPending",
-                        3: "StopPending",
-                        4: "Running",
-                        5: "ContinuePending",
-                        6: "PausePending",
-                        7: "Paused"
-                    }
-                    
                     for item in raw_data:
-                        raw_status = item.get("Status")
                         services_data.append({
                             "name": item.get("Name"),
                             "display_name": item.get("DisplayName"),
-                            "status": status_map.get(raw_status, f"Unknown ({raw_status})"),
-                            "is_running": raw_status == 4
+                            "status": item.get("State"),
+                            "start_account": item.get("StartName"),
+                            "is_running": item.get("State") == "Running"
                         })
                 
                 # Gérer les services non trouvés
@@ -155,21 +147,24 @@ class BatchService:
         Audit en mode découverte automatique (recherche .config, critères et pools).
         """
         results = []
-        roots_str = "'" + "','".join(search_roots) + "'"
+        # Ajout des chemins Program Files si non présents
+        standard_roots = ['C:\\inetpub', 'C:\\Program Files\\gs2E2', 'C:\\Program Files (x86)\\gs2E2']
+        all_roots = list(set(search_roots + standard_roots))
+        roots_str = "'" + "','".join(all_roots).replace("\\", "\\\\") + "'"
+        
         script = (
             "Import-Module WebAdministration -ErrorAction SilentlyContinue; "
-            "$roots = " + roots_str + "; "
-            "$configs = Get-ChildItem -Path $roots -Filter '*.config' -Recurse -Depth 4 -ErrorAction SilentlyContinue | Where-Object { $_.Name -match 'Saphir|Web.config|App.config' }; "
+            "$roots = @(" + roots_str + "); "
+            # Recherche de web.config et *.exe.config dans les dossiers SAPHIRV3
+            "$configs = Get-ChildItem -Path $roots -Include 'web.config','*.exe.config' -Recurse -Depth 5 -ErrorAction SilentlyContinue | Where-Object { $_.FullName -match 'SAPHIRV3' }; "
             "$found_configs = foreach ($f in $configs) { "
             "  try { "
             "    [xml]$xml = Get-Content $f.FullName -ErrorAction SilentlyContinue; "
-            "    $crit = $xml.configuration.appSettings.add | Where-Object { $_.key -eq 'PARAMCRIT0001' } | Select-Object -ExpandProperty value; "
             "    $ep = $xml.configuration.appSettings.add | Where-Object { $_.key -eq 'CentralisationParamEndPoint' } | Select-Object -ExpandProperty value; "
-            "    $exists = if($crit) { Test-Path (Join-Path $f.DirectoryName $crit) } else { $false }; "
-            "    @{ file_path=$f.FullName; param_crit_0001=$crit; critere_file_exists=$exists; central_param_endpoint=$ep } "
+            "    @{ file_path=$f.FullName; central_param_endpoint=$ep } "
             "  } catch { continue } "
             "}; "
-            "$pools = if(Get-Module WebAdministration) { Get-ChildItem IIS:\\AppPools | Select-Object Name, State } else { @() }; "
+            "$pools = if(Get-Module WebAdministration) { Get-ChildItem IIS:\\AppPools | Where-Object { $_.Name -like 'SAPHIRV3*' } } else { @() }; "
             "[PSCustomObject]@{ configs_found=$found_configs; iis_pools=$pools | ForEach-Object { @{ name=$_.Name; state=$_.State } } } | ConvertTo-Json -Compress"
         )
 
@@ -184,10 +179,18 @@ class BatchService:
                 if result["success"] and result["stdout"]:
                     clean_stdout = result["stdout"].strip()
                     data = json.loads(clean_stdout)
+                    
+                    # Sécurisation des types pour éviter ResponseValidationError
+                    configs = data.get("configs_found", [])
+                    if isinstance(configs, dict): configs = [configs] if configs else []
+                    
+                    pools = data.get("iis_pools", [])
+                    if isinstance(pools, dict): pools = [pools] if pools else []
+
                     results.append({
                         "server": server,
-                        "configs_found": data.get("configs_found", []),
-                        "iis_pools": data.get("iis_pools", []),
+                        "configs_found": configs,
+                        "iis_pools": pools,
                         "is_reachable": True
                     })
                 else:
@@ -295,16 +298,16 @@ class BatchService:
 
         # Fallback si rien trouvé
         if not discovery_map:
-            discovery_map["localhost"] = ["C:\\SaphirV3"]
+            discovery_map["localhost"] = ["C:\\inetpub"]
 
         final_results = []
         for server, paths in discovery_map.items():
-            actual_paths = list(set(paths)) if paths else ["C:\\SaphirV3"]
+            actual_paths = list(set(paths)) if paths else ["C:\\inetpub"]
             roots_str = "'" + "','".join(actual_paths).replace("\\", "\\\\") + "'"
             
             script = (
                 f"$roots = @({roots_str}); "
-                "$configs = Get-ChildItem -Path $roots -Filter '*.config' -Recurse -Depth 2 -ErrorAction SilentlyContinue; "
+                "$configs = Get-ChildItem -Path $roots -Filter 'web.config' -Recurse -Depth 5 -ErrorAction SilentlyContinue | Where-Object { $_.FullName -match 'SAPHIRV3' }; "
                 "$results = foreach ($f in $configs) { "
                 "  try { "
                 "    [xml]$xml = Get-Content $f.FullName -ErrorAction SilentlyContinue; "
